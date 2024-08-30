@@ -15,15 +15,15 @@ def main():
     parser.add_argument("--steps", type=int, default=1024)
     args = parser.parse_args()
     
-    
     device = torch.device('cuda')
     model, graph, noise = load_model(args.model_path, device)
     tokenizer = GPT2TokenizerFast.from_pretrained('gpt2')
 
+    my_inp = "She said" 
     input_ids = tokenizer.encode(my_inp, return_tensors='pt').to(device)
     print(input_ids.shape)
 
-    sampling_fn = sampling.get_pc_sampler(
+    sampling_fn = sampling.get_batch_sampler(
         graph, noise, (args.batch_size, 1024), 'analytic', args.steps, device=device
     )
 
@@ -33,7 +33,7 @@ def main():
 
     print("=================================================")
     for i in text_samples:
-        print(i)
+        # print(i)
         print("=================================================")
 
 if __name__=="__main__":

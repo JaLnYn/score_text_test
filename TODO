@@ -1,0 +1,4 @@
+set up testing
+test noise levels
+try random noise for text training
+can we diffuse in a lie direction by injecting bad noise??
