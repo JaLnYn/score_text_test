@@ -129,15 +129,11 @@ def get_batch_sampler(graph, noise, batch_dims, predictor, steps, denoise=True, 
     denoiser = Denoiser(graph, noise)
 
     @torch.no_grad()
-    def pc_sampler(model, string=None):
+    def pc_sampler(model):
         sampling_score_fn = mutils.get_score_fn(model, train=False, sampling=True)
         x = graph.sample_limit([1, batch_dims[1]]).to(device)
         timesteps = torch.linspace(1, eps, steps + 1, device=device)
         dt = (1 - eps) / steps
-
-        print("======================")
-        print(x.shape)
-        x[0, 0:0 + string.shape[1]] = string
 
         steps_per_duplication = steps // math.log2(batch_dims[0])
 
@@ -169,15 +165,11 @@ def get_pc_sampler(graph, noise, batch_dims, predictor, steps, denoise=True, eps
     denoiser = Denoiser(graph, noise)
 
     @torch.no_grad()
-    def pc_sampler(model, string=None):
+    def pc_sampler(model):
         sampling_score_fn = mutils.get_score_fn(model, train=False, sampling=True)
         x = graph.sample_limit(*batch_dims).to(device)
         timesteps = torch.linspace(1, eps, steps + 1, device=device)
         dt = (1 - eps) / steps
-
-        print("======================")
-        print(x.shape)
-        x[0, 0:0 + string.shape[1]] = string
 
         for i in range(steps):
             t = timesteps[i] * torch.ones(x.shape[0], 1, device=device)
